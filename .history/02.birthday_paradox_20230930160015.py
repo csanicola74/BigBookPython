@@ -60,7 +60,7 @@ while True:
     response = input('> ')
     # changes the limit for how many birthdays are generated
     if response.isdecimal() and (0 < int(response) <= 100):
-        numBDays = int(response)
+        # numBDays = int(response)
         # User has entered a valid amount.
         break
 print()

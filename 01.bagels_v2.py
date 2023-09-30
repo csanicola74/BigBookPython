@@ -1,45 +1,39 @@
-"""Bagels, by Al Sweigart al@inventwithpython.com
-A deductive logic game where you must guess a number based on clues.
-This code is available at https://nostarch.com/big-book-small-python-programming
-A version of this game is featured in the book, "Invent Your Own
-Computer Games with Python" https://nostarch.com/inventwithpython
-Tags: short, game, puzzle"""
-
 import random
 
 # constant for the number of digits in the number to guess (!) Can be set from 1 to 10
 NUM_DIGITS = 3
 # constant for the maximum number of guesses the player has (!) Can be set from 1 to 100
 MAX_GUESSES = 10
+VALID_CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 
 def main():
     print('''Bagels, a deductive logic game.
 By Al Sweigart but re-created by Caroline Sanicola
 
-I'm thinking of a {}-digit number with no repeated digits.
+I'm thinking of a {}-character code made up of numbers and letters with no repeated characters.
 Try to guess what it is. Here are some clues:
 When I say:    That means:
-  Almost       One digit is correct but in the wrong position.
-  Yes         One digit is correct and in the right position.
-  Nope         No digit is correct.
+  Almost       One character is correct but in the wrong position.
+  Yes         One character is correct and in the right position.
+  Nope         No character is correct.
 
-For example, if the secret number was 248 and your guess was 843, the
+For example, if the secret code was 24B and your guess was B43, the
 clues would be Yes Almost.'''.format(NUM_DIGITS))
 
     while True:  # Main game loop.
         # This stores the secret number the player needs to guess:
         secretNum = getSecretNum()
-        print('I have thought up a number.')
+        print('I have thought up a code.')
         print('You have {} guesses to get it.'.format(MAX_GUESSES))
 
         numGuesses = 1
         while numGuesses <= MAX_GUESSES:
             guess = ''
             # Keep looping until they enter a valid guess:
-            while len(guess) != NUM_DIGITS or not guess.isdecimal():
+            while len(guess) != NUM_DIGITS or not all(char in VALID_CHARS for char in guess):
                 print('Guess #{}: '.format(numGuesses))
-                guess = input('> ')
+                guess = input('> ').upper()
 
             clues = getClues(guess, secretNum)
             print(clues)
@@ -59,7 +53,8 @@ clues would be Yes Almost.'''.format(NUM_DIGITS))
 
 def getSecretNum():
     """Returns a string made up of NUM_DIGITS unique random digits."""
-    numbers = list('0123456789')  # Create a list of digits 0 to 9.
+    numbers = list(
+        VALID_CHARS)  # Create a list of digits 0 to 9 and letters A to Z.
     random.shuffle(numbers)  # Shuffle them into random order.
 
     # Get the first NUM_DIGITS digits in the list for the secret number:
